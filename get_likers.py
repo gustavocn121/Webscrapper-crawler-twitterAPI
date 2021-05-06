@@ -18,7 +18,7 @@ def cls():
 def get_likers(user_screen_name, id_list):
     print("Get likers Running...")
     driver = webdriver.Chrome(PATH)
-   # driver.set_window_position(-10000, 0)
+    driver.set_window_position(-10000, 0)
 
     URL = 'https://twitter.com/login'
     driver.get(URL)

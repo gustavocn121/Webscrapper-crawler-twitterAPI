@@ -48,7 +48,7 @@ def get_timeline(user_screen):
         date_item = str(item[0])
         date_item_fixed = f'{date_item[:4]}{date_item[5:7]}{date_item[8:10]}'
         if (((int(today_fixed)) - int(date_item_fixed)) > 2):
-            tl_tt.pop(item)
+            tl_tt.pop(tl_tt.index(item))
     return tl_tt
 
 
