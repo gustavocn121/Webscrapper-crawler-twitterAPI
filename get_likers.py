@@ -18,7 +18,7 @@ def cls():
 def get_likers(user_screen_name, id_list):
     print("Get likers Running...")
     driver = webdriver.Chrome(PATH)
-    driver.set_window_position(-10000, 0)
+   # driver.set_window_position(-10000, 0)
 
     URL = 'https://twitter.com/login'
     driver.get(URL)
@@ -44,7 +44,7 @@ def get_likers(user_screen_name, id_list):
         url_tt = f'https://twitter.com/{screen_name}/status/{status_id}/likes'
         driver.get(url_tt)
         while not (end_scroll):
-            sleep(3)
+            sleep(5)
             profiles = driver.find_elements_by_xpath(
                 '/html/body/div/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div/section/div/div/div')
 
@@ -74,8 +74,7 @@ def get_likers(user_screen_name, id_list):
 
 if __name__ == "__main__":
     cls()
-    id_list = ['1389727999046545414']
-    # ,T[2]
+    id_list = ['a']
     likers = get_likers('KhemeticChurch', id_list)
 
     print("\n\n ----- Users that liked your tweets -----")
