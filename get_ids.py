@@ -28,8 +28,11 @@ def get_timeline(user_screen):
                           t.favorite_count, t.retweet_count, t.author.screen_name])
     today = str(datetime.now())
     today_fixed = f'{today[:4]}{today[5:7]}{today[8:10]}'
+    tl_indx = 0
+    print("[0] searching timeline page...")
     while tl_tt != []:
-        print("New ID found")
+        tl_indx += 1
+        print(f"[{tl_indx}] searching timeline page...")
         last_tt_date_str = str(tl_tt[-1][0])
         last_date_fixed = f'{last_tt_date_str[:4]}{last_tt_date_str[5:7]}{last_tt_date_str[8:10]}'
         if ((int(today_fixed)) - (int(last_date_fixed)) < 2):
