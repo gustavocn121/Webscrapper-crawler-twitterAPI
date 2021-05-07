@@ -50,9 +50,10 @@ def get_likers(user_screen_name, id_list):
 
             profiles = driver.find_elements_by_xpath(
                 '/html/body/div/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div/section/div/div/div')
-            if (len(profiles) == 1) and profiles[0].text == '':
+
+            if profiles == []:
                 skip = True
-                end_scroll == True
+                end_scroll = True
             if not skip:
                 i = 0
                 profiles_text = []
