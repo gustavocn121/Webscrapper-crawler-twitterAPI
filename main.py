@@ -8,7 +8,7 @@ layout = [[sg.Text('Get list of who liked your tweets posted in the last 2 days!
           [sg.Text('Enter your username(@)'), sg.InputText()],
           [sg.Button('Search', size=(10, 0)), sg.Button('Cancel')]]
 end_all = False
-window = sg.Window('Window Title', layout)
+window = sg.Window('Twitter Bot - Likers', layout)
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Cancel':
