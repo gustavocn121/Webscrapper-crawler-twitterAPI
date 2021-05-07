@@ -5,7 +5,7 @@ import csv
 
 sg.theme('DarkAmber')
 layout = [[sg.Text('Get list of who liked your tweets posted in the last 2 days!')],
-          [sg.Text('Enter your username(@)'), sg.InputText()],
+          [sg.Text('Enter your username(@)'), sg.InputText(focus=True)],
           [sg.Button('Search', size=(10, 0)), sg.Button('Cancel')]]
 end_all = False
 window = sg.Window('Twitter Bot - Likers', layout)
