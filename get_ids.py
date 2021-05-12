@@ -1,9 +1,6 @@
 import tweepy
-import json
 from tweepy_keys import *
-import logging
 import time
-import random
 from datetime import datetime, timedelta
 
 
