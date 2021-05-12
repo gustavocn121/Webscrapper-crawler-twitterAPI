@@ -29,13 +29,12 @@ def get_timeline(user_screen):
     today = str(datetime.now())
     today_fixed = f'{today[:4]}{today[5:7]}{today[8:10]}'
     tl_indx = 0
-    print("[0] searching timeline page...")
+    print("searching timeline page...")
     while tl_tt != []:
         tl_indx += 1
-        print(f"[{tl_indx}] searching timeline page...")
         last_tt_date_str = str(tl_tt[-1][0])
         last_date_fixed = f'{last_tt_date_str[:4]}{last_tt_date_str[5:7]}{last_tt_date_str[8:10]}'
-        if ((int(today_fixed)) - (int(last_date_fixed)) < 2):
+        if ((int(today_fixed)) - (int(last_date_fixed)) < 1):
             PAGE = PAGE + 1
             tl = api.user_timeline(
                 user_screen, include_rts=True, exclude_replies=True, page=PAGE)
@@ -51,7 +50,7 @@ def get_timeline(user_screen):
     for item in tl_tt:
         date_item = str(item[0])
         date_item_fixed = f'{date_item[:4]}{date_item[5:7]}{date_item[8:10]}'
-        if (((int(today_fixed)) - int(date_item_fixed)) > 2) or (item[2] == 0):
+        if (((int(today_fixed)) - int(date_item_fixed)) > 1) or (item[2] == 0):
             tl_tt.pop(tl_tt.index(item))
     return tl_tt
 
