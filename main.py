@@ -5,12 +5,7 @@ from get_likers import get_tweets_likers
 import csv
 import pandas as pd
 from more_itertools import unique_everseen
-
-
-def cleanExport():
-    with open('users.csv', 'r') as f, open('users.csv', 'w') as out_file:
-        out_file.writelines(unique_everseen(f))
-
+from time import sleep
 
 sg.theme('DarkAmber')
 layout = [[sg.Text('Get list of who liked your tweets posted in the last 2 days!')],
@@ -40,6 +35,13 @@ if end_all == False:
         print("id list returned empty")
         raise exception
     print("Searching for 'likers'")
-    get_tweets_likers(username_at, tl_tt)
-
-    cleanExport()
+    lks = set(get_tweets_likers(username_at, tl_tt))
+    sleep(1)
+    with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
+        csv_writer = csv.writer(f, delimiter=';')
+        csv_writer.writerow(
+            ['users_@'])
+        for usr_at in lks:
+            csv_writer.writerow([usr_at])
+    print("Likers search done - OK")
+    sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")

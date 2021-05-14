@@ -25,7 +25,7 @@ def login_tt():
 
     URL = 'https://twitter.com/login'
     driver.get(URL)
-    sleep(2)
+    sleep(1)
 
     username = driver.find_element_by_xpath(
         '//input[@name="session[username_or_email]"]')
@@ -49,7 +49,7 @@ def get_likers(user_screen_name, ID):
     url_tt = f'https://twitter.com/{screen_name}/status/{status_id}/likes'
     driver.get(url_tt)
     while not (end_scroll):
-        sleep(2)
+        sleep(1)
         profiles = driver.find_elements_by_xpath(
             '/html/body/div/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div/section/div/div/div')
         if profiles == []:
@@ -85,17 +85,7 @@ def get_tweets_likers(screen_name_usr, id_list):
     lks = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         executor.map(get_likers, repeat(screen_name_usr), id_list)
-    print('\n\n\n\n\n\n\nhjfbshefhjsefhjkvgesfvghsfvkghkvghsfvse\n\n\n')
-
-    with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
-        csv_writer = csv.writer(f, delimiter=';')
-        csv_writer.writerow(
-            ['users_@'])
-        for i in lks:
-            csv_writer.writerow([i])
-
-    print("Likers search done - OK")
-    sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")
+    return lks
 
 
 if __name__ == "__main__":
