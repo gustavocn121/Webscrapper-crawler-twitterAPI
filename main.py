@@ -40,11 +40,6 @@ if end_all == False:
         print("id list returned empty")
         raise exception
     print("Searching for 'likers'")
-    with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
-        csv_writer = csv.writer(f, delimiter=';')
-        csv_writer.writerow(
-            ['users_@'])
-
     get_tweets_likers(username_at, tl_tt)
 
     cleanExport()

@@ -89,8 +89,11 @@ def get_tweets_likers(screen_name_usr, id_list):
 
     with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
         csv_writer = csv.writer(f, delimiter=';')
+        csv_writer.writerow(
+            ['users_@'])
         for i in lks:
             csv_writer.writerow([i])
+
     print("Likers search done - OK")
     sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")
 
