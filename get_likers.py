@@ -9,11 +9,14 @@ import re
 import concurrent.futures
 import csv
 import time
+
+
 def cls():
     if os.name == 'posix':
         return os.system('clear')
     else:
         return os.system('cls')
+
 
 def login_tt():
     print("Get likers Running...")
@@ -22,7 +25,6 @@ def login_tt():
 
     URL = 'https://twitter.com/login'
     driver.get(URL)
-    print("Webdriver opened")
     sleep(2)
 
     username = driver.find_element_by_xpath(
@@ -32,11 +34,11 @@ def login_tt():
         '//input[@name="session[password]"]')
     password.send_keys(tt_password)
     password.send_keys(Keys.ENTER)
-    print("Login done")
     return driver
 
+
 def get_likers(user_screen_name, ID):
-    print(str(ID) + '\n')    
+    print(str(ID) + '\n')
     driver = login_tt()
     likers_list = []
     screen_name = user_screen_name
@@ -72,24 +74,20 @@ def get_likers(user_screen_name, ID):
                 driver.execute_script(
                     "arguments[0].scrollBy(0, arguments[1]);", element, scroll_y_by)
 
-    print("Scrape Done!")
-    driver.close()    
-    with open(f'./users.csv', 'a', newline='', encoding='UTF-8') as f:
-        csv_writer = csv.writer(f, delimiter=';')
-        for user_liker in likers_list:
-            csv_writer.writerow([user_liker])
+    driver.close()
+    return likers_list
 
 
-
-def get_tweets_likers(screen_name_usr,id_list):    
+def get_tweets_likers(screen_name_usr, id_list):
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-        executor.map(get_likers, screen_name_usr ,id_list)
+        executor.map(get_likers, screen_name_usr, id_list)
+
 
 if __name__ == "__main__":
     cls()
     start_time = time.time()
-    id_list = ['1392314118720299011', '1392281135854473219', '1392281028924874753', '1392280955604242435', '1392280878974267399', '1392279788954415104', '1392279567407009796', '1392279536847388673', '1392279355116515330', '1392278891381747712', 
-'1392265888850604034', '1392265748467175427', '1392265393176158210', '1392263868513067009', '1392262266679029762', '1392252050176581632', '1392231109618847747', '1392229986879213569', '1392196066984951808', '1392191749158629376']  
+    id_list = ['1392314118720299011', '1392281135854473219', '1392281028924874753', '1392280955604242435', '1392280878974267399', '1392279788954415104', '1392279567407009796', '1392279536847388673', '1392279355116515330', '1392278891381747712',
+               '1392265888850604034', '1392265748467175427', '1392265393176158210', '1392263868513067009', '1392262266679029762', '1392252050176581632', '1392231109618847747', '1392229986879213569', '1392196066984951808', '1392191749158629376']
     likers = get_tweets_likers('KhemeticChurch', id_list)
     """
     print("\n\n ----- Users that liked your tweets -----")
@@ -98,8 +96,5 @@ if __name__ == "__main__":
         print(item)
     """
 
-
-    duration = time.time() - start_time 
-    print('\n\nDuration: '+ str(duration))  
-
-   
+    duration = time.time() - start_time
+    print('\n\nDuration: ' + str(duration))

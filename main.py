@@ -1,3 +1,4 @@
+from logging import error, exception
 import PySimpleGUI as sg
 from get_ids import get_timeline
 from get_likers import get_tweets_likers
@@ -35,20 +36,21 @@ if end_all == False:
     print("Searching for tweets ids...")
     tl_tt = get_timeline(username_at)
     print("Get tweets id - OK")
-    id_list = []
-    print("Cleaning extracted info")
-    for T in tl_tt:
-        try:
-            id_list.append(T[1])
-            print(f"[{tl_tt.index(T)}] id: {T[1]} likes: {T[2]}")
-        except:
-            break
+    if tl_tt == []:
+        print("id list returned empty")
+        raise exception
     print("Searching for 'likers'")
     with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
         csv_writer = csv.writer(f, delimiter=';')
         csv_writer.writerow(
             ['users_@'])
-    likers = get_tweets_likers(username_at, id_list)
+    likers = []
+    likers.append(get_tweets_likers(username_at, tl_tt))
+    with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
+        csv_writer = csv.writer(f, delimiter=';')
+        for i in likers:
+            csv_writer.writerow(
+                [i])
     cleanExport()
     print("Likers search done - OK")
     sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")
