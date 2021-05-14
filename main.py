@@ -1,7 +1,15 @@
 import PySimpleGUI as sg
 from get_ids import get_timeline
-from get_likers import get_likers
+from get_likers import get_tweets_likers
 import csv
+import pandas as pd
+from more_itertools import unique_everseen
+
+
+def cleanExport():
+    with open('users.csv', 'r') as f, open('users.csv', 'w') as out_file:
+        out_file.writelines(unique_everseen(f))
+
 
 sg.theme('DarkAmber')
 layout = [[sg.Text('Get list of who liked your tweets posted in the last 2 days!')],
@@ -36,13 +44,11 @@ if end_all == False:
         except:
             break
     print("Searching for 'likers'")
-    likers = get_likers(username_at, id_list)
-    print("Likers search done - OK")
     with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
         csv_writer = csv.writer(f, delimiter=';')
         csv_writer.writerow(
             ['users_@'])
-        for user_liker in likers:
-            csv_writer.writerow([user_liker])
-
+    likers = get_tweets_likers(username_at, id_list)
+    cleanExport()
+    print("Likers search done - OK")
     sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")

@@ -27,28 +27,39 @@ def get_timeline(user_screen):
     today_fixed = f'{today[:4]}{today[5:7]}{today[8:10]}'
     tl_indx = 0
     print("searching timeline page...")
-    while tl_tt != []:
+    end_paging = False
+    while tl_tt != [] and not(end_paging):
+        PAGE = PAGE + 1
         tl_indx += 1
+        print(tl_indx)
         last_tt_date_str = str(tl_tt[-1][0])
         last_date_fixed = f'{last_tt_date_str[:4]}{last_tt_date_str[5:7]}{last_tt_date_str[8:10]}'
         if ((int(today_fixed)) - (int(last_date_fixed)) < 1):
-            PAGE = PAGE + 1
-            tl = api.user_timeline(
-                user_screen, include_rts=True, exclude_replies=True, page=PAGE)
-            if tl == []:
-                break
+            try:
+                tl = api.user_timeline(
+                    user_screen, include_rts=True, exclude_replies=True, page=PAGE)
+            except tweepy.TweepError as e:
+                print(e.reason)
+                input("Press any key to end...")
+                raise tweepy.TweepError(e)
+
             for t in tl:
-                if str(t.author.screen_name) == user_screen:
+                if str(t.author.screen_name) == user_screen and t.text[:4] != 'RT @':
                     tl_tt.append([str(t.created_at), t.id_str,
                                   t.favorite_count, t.retweet_count, t.user.screen_name])
+                    print(str(t.created_at) + (t.id_str))
+            for item in tl_tt:
+                date_item = str(item[0])
+                date_item_fixed = f'{date_item[:4]}{date_item[5:7]}{date_item[8:10]}'
+
+                if (((int(today_fixed)) - int(date_item_fixed)) > 1):
+                    end_paging = True
+                if item[2] == 0 or (((int(today_fixed)) - int(date_item_fixed)) > 1):
+                    tl_tt.pop(tl_tt.index(item))
 
         else:
             break
-    for item in tl_tt:
-        date_item = str(item[0])
-        date_item_fixed = f'{date_item[:4]}{date_item[5:7]}{date_item[8:10]}'
-        if (((int(today_fixed)) - int(date_item_fixed)) > 1) or (item[2] == 0):
-            tl_tt.pop(tl_tt.index(item))
+
     return tl_tt
 
 
