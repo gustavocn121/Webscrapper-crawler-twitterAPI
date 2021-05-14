@@ -1,14 +1,14 @@
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
 from Selenium_keys import *
-from selenium.webdriver.common.action_chains import ActionChains
 import os
 import re
 import concurrent.futures
 import csv
 import time
+from itertools import repeat
+import PySimpleGUI as sg
 
 
 def cls():
@@ -45,6 +45,7 @@ def get_likers(user_screen_name, ID):
     skip = False
     end_scroll = False
     status_id = ID
+
     url_tt = f'https://twitter.com/{screen_name}/status/{status_id}/likes'
     driver.get(url_tt)
     while not (end_scroll):
@@ -75,26 +76,35 @@ def get_likers(user_screen_name, ID):
                     "arguments[0].scrollBy(0, arguments[1]);", element, scroll_y_by)
 
     driver.close()
-    return likers_list
+    for it in likers_list:
+        lks.append(it)
 
 
 def get_tweets_likers(screen_name_usr, id_list):
+    global lks
+    lks = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-        executor.map(get_likers, screen_name_usr, id_list)
+        executor.map(get_likers, repeat(screen_name_usr), id_list)
+    print('\n\n\n\n\n\n\nhjfbshefhjsefhjkvgesfvghsfvkghkvghsfvse\n\n\n')
+
+    with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
+        csv_writer = csv.writer(f, delimiter=';')
+        for i in lks:
+            csv_writer.writerow([i])
+    print("Likers search done - OK")
+    sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")
 
 
 if __name__ == "__main__":
     cls()
     start_time = time.time()
-    id_list = ['1392314118720299011', '1392281135854473219', '1392281028924874753', '1392280955604242435', '1392280878974267399', '1392279788954415104', '1392279567407009796', '1392279536847388673', '1392279355116515330', '1392278891381747712',
-               '1392265888850604034', '1392265748467175427', '1392265393176158210', '1392263868513067009', '1392262266679029762', '1392252050176581632', '1392231109618847747', '1392229986879213569', '1392196066984951808', '1392191749158629376']
+    id_list = ['1393218104402927617', '1393070702979280896']
     likers = get_tweets_likers('KhemeticChurch', id_list)
-    """
+
     print("\n\n ----- Users that liked your tweets -----")
-    
+
     for item in likers:
         print(item)
-    """
 
     duration = time.time() - start_time
     print('\n\nDuration: ' + str(duration))

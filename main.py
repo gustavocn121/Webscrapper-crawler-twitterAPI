@@ -44,13 +44,7 @@ if end_all == False:
         csv_writer = csv.writer(f, delimiter=';')
         csv_writer.writerow(
             ['users_@'])
-    likers = []
-    likers.append(get_tweets_likers(username_at, tl_tt))
-    with open(f'./users.csv', 'w', newline='', encoding='UTF-8') as f:
-        csv_writer = csv.writer(f, delimiter=';')
-        for i in likers:
-            csv_writer.writerow(
-                [i])
+
+    get_tweets_likers(username_at, tl_tt)
+
     cleanExport()
-    print("Likers search done - OK")
-    sg.Popup("Done!!\n\nData saved to : '(./users.csv)\n'")
